@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c5ce9950-c7e9-45b9-abe8-dfcc99351a0c" name="Changes" comment="Add example input">
+    <list default="true" id="c5ce9950-c7e9-45b9-abe8-dfcc99351a0c" name="Changes" comment="Parse CSV rows into tuples">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/Main.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Main.scala" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -69,7 +70,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1677802575975</updated>
-      <workItem from="1677802577058" duration="306000" />
+      <workItem from="1677802577058" duration="387000" />
     </task>
     <task id="LOCAL-00001" summary="Add initial commit with project structure">
       <created>1677802656837</created>
@@ -92,7 +93,14 @@
       <option name="project" value="LOCAL" />
       <updated>1677802852806</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Parse CSV rows into tuples">
+      <created>1677802909774</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1677802909774</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -102,6 +110,7 @@
     <MESSAGE value="Add initial commit with project structure" />
     <MESSAGE value="Add Spark" />
     <MESSAGE value="Add example input" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add example input" />
+    <MESSAGE value="Parse CSV rows into tuples" />
+    <option name="LAST_COMMIT_MESSAGE" value="Parse CSV rows into tuples" />
   </component>
 </project>

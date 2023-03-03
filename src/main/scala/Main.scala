@@ -10,6 +10,10 @@ object Main {
     val inputRDD = sc.textFile(inputDirectory)
 
     val parsedRDD = parseIntoTuple(inputRDD)
+
+    // For the data processing, we only really care about data from the same company.
+    // So we can simplify the problem by considering each company separately.
+    val groupedRDD = parsedRDD.groupBy(_._2) // Company column
   }
 
   private def parseIntoTuple(inputRDD: RDD[String]): RDD[(Int, String, Int)] = {
