@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c5ce9950-c7e9-45b9-abe8-dfcc99351a0c" name="Changes" comment="Merge the data back into a single list and sort it">
+    <list default="true" id="c5ce9950-c7e9-45b9-abe8-dfcc99351a0c" name="Changes" comment="Save to CSV files&#10;&#10;TODO: Rename them so that they match the naming conventions required.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/scala/Main.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Main.scala" afterDir="false" />
     </list>
@@ -70,7 +70,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1677802575975</updated>
-      <workItem from="1677802577058" duration="4537000" />
+      <workItem from="1677802577058" duration="4616000" />
     </task>
     <task id="LOCAL-00001" summary="Add initial commit with project structure">
       <created>1677802656837</created>
@@ -142,7 +142,14 @@
       <option name="project" value="LOCAL" />
       <updated>1677805458324</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Save to CSV files&#10;&#10;TODO: Rename them so that they match the naming conventions required.">
+      <created>1677807175709</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1677807175709</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -159,6 +166,7 @@
     <MESSAGE value="Add process for neighbor entries&#10;&#10;If the previous entry is valid (value &gt; 1000), it will always be the answer for the next entry." />
     <MESSAGE value="Add propagation of answers throughout RDD&#10;&#10;In general, the answer for entry `i` will be either:&#10;1. Entry `i-1`, if it is valid (value &gt; 1000)&#10;2. The *answer* for entry `i-1`, that we have already calculated.&#10;By processing the tuples in order, we can propagate the answers throughout the whole RDD." />
     <MESSAGE value="Merge the data back into a single list and sort it" />
-    <option name="LAST_COMMIT_MESSAGE" value="Merge the data back into a single list and sort it" />
+    <MESSAGE value="Save to CSV files&#10;&#10;TODO: Rename them so that they match the naming conventions required." />
+    <option name="LAST_COMMIT_MESSAGE" value="Save to CSV files&#10;&#10;TODO: Rename them so that they match the naming conventions required." />
   </component>
 </project>
