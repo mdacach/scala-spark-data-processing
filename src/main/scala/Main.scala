@@ -17,6 +17,9 @@ object Main {
 
     // We will also need to process them in order.
     val sortedRDD = groupedRDD.mapValues(_.toList.sortBy(_._1))
+
+    // While grouping by company, we have introduced a key "company", that we don't really need.
+    val onlyValuesRDD = sortedRDD.map(_._2) // Second element is the value, so we are effectively dropping the keys.
   }
 
   private def parseIntoTuple(inputRDD: RDD[String]): RDD[(Int, String, Int)] = {

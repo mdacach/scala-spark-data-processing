@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c5ce9950-c7e9-45b9-abe8-dfcc99351a0c" name="Changes" comment="Group data by company column">
+    <list default="true" id="c5ce9950-c7e9-45b9-abe8-dfcc99351a0c" name="Changes" comment="Sort entries by ID">
       <change beforePath="$PROJECT_DIR$/src/main/scala/Main.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Main.scala" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -69,7 +69,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1677802575975</updated>
-      <workItem from="1677802577058" duration="472000" />
+      <workItem from="1677802577058" duration="575000" />
     </task>
     <task id="LOCAL-00001" summary="Add initial commit with project structure">
       <created>1677802656837</created>
@@ -106,7 +106,14 @@
       <option name="project" value="LOCAL" />
       <updated>1677802993362</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Sort entries by ID">
+      <created>1677803076520</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1677803076520</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -118,6 +125,7 @@
     <MESSAGE value="Add example input" />
     <MESSAGE value="Parse CSV rows into tuples" />
     <MESSAGE value="Group data by company column" />
-    <option name="LAST_COMMIT_MESSAGE" value="Group data by company column" />
+    <MESSAGE value="Sort entries by ID" />
+    <option name="LAST_COMMIT_MESSAGE" value="Sort entries by ID" />
   </component>
 </project>
