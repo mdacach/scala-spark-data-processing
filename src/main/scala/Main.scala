@@ -1,5 +1,8 @@
+import org.apache.spark
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.DataFrame
+import org.apache.spark.sql.functions._
 
 object Main {
   def main(args: Array[String]): Unit = {
@@ -27,6 +30,12 @@ object Main {
     // Now we have solved the problem for each company separately.
 
     val finalRDD = propagatedRDD.flatMap(x => x).sortBy(_._1)
+
+    // Save to CSV files.
+    // The name here is auto-generated though, and I didn't find any easy way of changing it.
+    // Maybe let's rename it after.
+    val asDataFrame = spark.createDataFrame(finalRDD)
+    asDataFrame.write.format("csv").save("output")
   }
 
   type InitialDataTuple = (Int, String, Int)
