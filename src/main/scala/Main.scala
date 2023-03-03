@@ -22,6 +22,9 @@ object Main {
     val onlyValuesRDD = sortedRDD.map(_._2) // Second element is the value, so we are effectively dropping the keys.
 
     val neighborsRDD = processNeighbors(onlyValuesRDD)
+
+    val propagatedRDD = propagateAnswers(neighborsRDD)
+    // Now we have solved the problem for each company separately.
   }
 
   type InitialDataTuple = (Int, String, Int)
@@ -62,6 +65,34 @@ object Main {
       val (firstID, firstName, firstValue) = company.head
       val firstEntry = (firstID, firstName, firstValue, 0, 0)
       (Iterator(firstEntry) ++ secondEntryOnwards).toList
+    })
+  }
+
+  // In general, the answer for entry `i` will be either:
+  // 1. Entry `i-1`, if it is valid (value > 1000)
+  // 2. The answer for entry `i-1`, that we have already calculated.
+  // By processing the tuples in order, we can propagate the answers throughout the whole RDD.
+  private def propagateAnswers(inputRDD: RDD[List[ProcessedDataTuple]]): RDD[List[ProcessedDataTuple]] = {
+    inputRDD.map(company => {
+      // As above, the first entry will be skipped and should be restored later.
+      val secondEntryOnwards = company.sliding(2).map {
+        case Seq((previousID, previousCompany, previousValue, previousAnswerID, previousAnswerValue), (currentID, currentCompany, currentValue, currentAnswerID, currentAnswerValue)) =>
+          // As we have grouped by company, the previousCompany here should always match currentCompany
+          assert(previousCompany == currentCompany, "Neighbors should have the same company name.")
+
+          val doNotHaveAnswerForCurrent = currentAnswerID == 0
+          if (doNotHaveAnswerForCurrent) // "is valid"
+          {
+            // It's always OK to populate it with the previous answers.
+            // 1. If previous answer does not exist, it is 0 and we do not change anything.
+            // 2. If previous answer exists, we correctly propagate it to the current entry.
+            (currentID, currentCompany, currentValue, previousAnswerID, previousAnswerValue) // it's the answer for `current`
+          } else {
+            // This answer is already OK. Do not change it.
+            (currentID, currentCompany, currentValue, currentAnswerID, currentAnswerValue)
+          }
+      }
+      (Iterator(company.head) ++ secondEntryOnwards).toList
     })
   }
 }
