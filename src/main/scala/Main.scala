@@ -25,6 +25,8 @@ object Main {
 
     val propagatedRDD = propagateAnswers(neighborsRDD)
     // Now we have solved the problem for each company separately.
+
+    val finalRDD = propagatedRDD.flatMap(x => x).sortBy(_._1)
   }
 
   type InitialDataTuple = (Int, String, Int)
