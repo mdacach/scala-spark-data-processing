@@ -4,5 +4,8 @@ object Main {
   def main(args: Array[String]): Unit = {
     val spark = SparkSession.builder.master("local[*]").appName("Spark-EPIC").getOrCreate()
     val sc = spark.sparkContext
+
+    val inputDirectory = "input"
+    val inputRDD = sc.textFile(inputDirectory)
   }
 }
