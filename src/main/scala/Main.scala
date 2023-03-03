@@ -14,6 +14,9 @@ object Main {
     // For the data processing, we only really care about data from the same company.
     // So we can simplify the problem by considering each company separately.
     val groupedRDD = parsedRDD.groupBy(_._2) // Company column
+
+    // We will also need to process them in order.
+    val sortedRDD = groupedRDD.mapValues(_.toList.sortBy(_._1))
   }
 
   private def parseIntoTuple(inputRDD: RDD[String]): RDD[(Int, String, Int)] = {
