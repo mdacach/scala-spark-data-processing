@@ -11,7 +11,8 @@ object Main {
     val sc = sparkSession.sparkContext
 
     val inputRDD = sc.textFile(inputDirectory)
-    val outputRDD = solveForRDD(inputRDD)
+    val parsedRDD = parseIntoTuple(inputRDD)
+    val outputRDD = solveForRDD(parsedRDD)
 
     // Save to CSV files.
     // The name here is auto-generated though, and I didn't find any easy way of changing it.
@@ -28,12 +29,10 @@ object Main {
   }
 
   // Pure function, easier to test and reason about.
-  def solveForRDD(inputRDD: RDD[String]): RDD[ProcessedDataTuple] = {
-    val parsedRDD = parseIntoTuple(inputRDD)
-
+  def solveForRDD(inputRDD: RDD[InitialDataTuple]): RDD[ProcessedDataTuple] = {
     // For the data processing, we only really care about data from the same company.
     // So we can simplify the problem by considering each company separately.
-    val groupedRDD = parsedRDD.groupBy(_._2) // Company column
+    val groupedRDD = inputRDD.groupBy(_._2) // Company column
 
     // We will also need to process them in order.
     val sortedRDD = groupedRDD.mapValues(_.toList.sortBy(_._1))
