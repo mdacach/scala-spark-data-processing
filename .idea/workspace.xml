@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c5ce9950-c7e9-45b9-abe8-dfcc99351a0c" name="Changes" comment="Add Spark">
-      <change afterPath="$PROJECT_DIR$/input/input-1.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/input/input-2.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="c5ce9950-c7e9-45b9-abe8-dfcc99351a0c" name="Changes" comment="Add example input">
       <change beforePath="$PROJECT_DIR$/src/main/scala/Main.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/Main.scala" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -43,6 +40,10 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -68,7 +69,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1677802575975</updated>
-      <workItem from="1677802577058" duration="264000" />
+      <workItem from="1677802577058" duration="306000" />
     </task>
     <task id="LOCAL-00001" summary="Add initial commit with project structure">
       <created>1677802656837</created>
@@ -84,7 +85,14 @@
       <option name="project" value="LOCAL" />
       <updated>1677802761216</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Add example input">
+      <created>1677802852806</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1677802852806</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -93,6 +101,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Add initial commit with project structure" />
     <MESSAGE value="Add Spark" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add Spark" />
+    <MESSAGE value="Add example input" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add example input" />
   </component>
 </project>
