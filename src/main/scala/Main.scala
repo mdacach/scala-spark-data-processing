@@ -7,11 +7,28 @@ object Main {
     solve(spark, "input", "output_temp")
   }
 
-  private def solve(sparkSession: SparkSession, inputDirectory: String, outputDirectory: String): Unit = {
+  def solve(sparkSession: SparkSession, inputDirectory: String, outputDirectory: String): Unit = {
     val sc = sparkSession.sparkContext
 
     val inputRDD = sc.textFile(inputDirectory)
+    val outputRDD = solveForRDD(inputRDD)
 
+    // Save to CSV files.
+    // The name here is auto-generated though, and I didn't find any easy way of changing it.
+    // Maybe let's rename it after.
+    val asDataFrame = sparkSession.createDataFrame(outputRDD)
+    asDataFrame.write.format("csv").save(outputDirectory)
+    // Possible Solutions:
+    // 1. Rename all output files in place.
+    //    (But maybe Spark uses the naming conventions for something and we should not change it?)
+    // 2. Copy all the output files and rename the copies.
+    //    (Bad because we would be using 2x the amount of storage to save the files, which can be unfeasible)
+    // Let's leave it for later.
+
+  }
+
+  // Pure function, easier to test and reason about.
+  def solveForRDD(inputRDD: RDD[String]): RDD[ProcessedDataTuple] = {
     val parsedRDD = parseIntoTuple(inputRDD)
 
     // For the data processing, we only really care about data from the same company.
@@ -29,19 +46,8 @@ object Main {
     val propagatedRDD = propagateAnswers(neighborsRDD)
     // Now we have solved the problem for each company separately.
 
-    val finalRDD = propagatedRDD.flatMap(x => x).sortBy(_._1)
-
-    // Save to CSV files.
-    // The name here is auto-generated though, and I didn't find any easy way of changing it.
-    // Maybe let's rename it after.
-    val asDataFrame = sparkSession.createDataFrame(finalRDD)
-    asDataFrame.write.format("csv").save(outputDirectory)
-    // Possible Solutions:
-    // 1. Rename all output files in place.
-    //    (But maybe Spark uses the naming conventions for something and we should not change it?)
-    // 2. Copy all the output files and rename the copies.
-    //    (Bad because we would be using 2x the amount of storage to save the files, which can be unfeasible)
-    // Let's leave it for later.
+    val outputRDD = propagatedRDD.flatMap(x => x).sortBy(_._1)
+    outputRDD
   }
 
   type InitialDataTuple = (Int, String, Int)
