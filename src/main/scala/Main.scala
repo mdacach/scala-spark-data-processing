@@ -33,6 +33,12 @@ object Main {
     // Maybe let's rename it after.
     val asDataFrame = spark.createDataFrame(finalRDD)
     asDataFrame.write.format("csv").save("output")
+    // Possible Solutions:
+    // 1. Rename all output files in place.
+    //    (But maybe Spark uses the naming conventions for something and we should not change it?)
+    // 2. Copy all the output files and rename the copies.
+    //    (Bad because we would be using 2x the amount of storage to save the files, which can be unfeasible)
+    // Let's leave it for later.
   }
 
   type InitialDataTuple = (Int, String, Int)
