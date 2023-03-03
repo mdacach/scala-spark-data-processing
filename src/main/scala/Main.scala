@@ -4,9 +4,12 @@ import org.apache.spark.sql.SparkSession
 object Main {
   def main(args: Array[String]): Unit = {
     val spark = SparkSession.builder.master("local[*]").appName("Spark-EPIC").getOrCreate()
-    val sc = spark.sparkContext
+    solve(spark, "input", "output_temp")
+  }
 
-    val inputDirectory = "input"
+  private def solve(sparkSession: SparkSession, inputDirectory: String, outputDirectory: String): Unit = {
+    val sc = sparkSession.sparkContext
+
     val inputRDD = sc.textFile(inputDirectory)
 
     val parsedRDD = parseIntoTuple(inputRDD)
@@ -31,8 +34,8 @@ object Main {
     // Save to CSV files.
     // The name here is auto-generated though, and I didn't find any easy way of changing it.
     // Maybe let's rename it after.
-    val asDataFrame = spark.createDataFrame(finalRDD)
-    asDataFrame.write.format("csv").save("output")
+    val asDataFrame = sparkSession.createDataFrame(finalRDD)
+    asDataFrame.write.format("csv").save(outputDirectory)
     // Possible Solutions:
     // 1. Rename all output files in place.
     //    (But maybe Spark uses the naming conventions for something and we should not change it?)
