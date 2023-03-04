@@ -70,23 +70,29 @@ object Main {
   // so we can already gather these "local" answers.
   private def processNeighbors(inputRDD: RDD[List[InitialDataTuple]]): RDD[List[ProcessedDataTuple]] = {
     inputRDD.map(company => {
-      // Note that because our sliding window yields the "second" entry,
-      // the first entry will be skipped, and should be restored later.
-      val secondEntryOnwards = company.sliding(2).map {
-        case Seq((previousID, previousCompany, previousValue), (currentID, currentCompany, currentValue)) =>
-          // As we have grouped by company, the previousCompany here should always match currentCompany
-          assert(previousCompany == currentCompany, "Neighbors should have the same company name.")
-
-          if (previousValue > 1000) // "is valid"
-          {
-            (currentID, currentCompany, currentValue, previousID, previousValue) // it's the answer for `current`
-          } else {
-            (currentID, currentCompany, currentValue, 0, 0) // we still do not know the answer for this entry
-          }
-      }
       val (firstID, firstName, firstValue) = company.head
       val firstEntry = (firstID, firstName, firstValue, 0, 0)
-      (Iterator(firstEntry) ++ secondEntryOnwards).toList
+
+      // In the case there is only one element, the answer is just the first entry.
+      if (company.size == 1) {
+        List(firstEntry)
+      } else {
+        // Note that because our sliding window yields the "second" entry,
+        // the first entry will be skipped, and should be restored later.
+        val secondEntryOnwards = company.sliding(2).map {
+          case Seq((previousID, previousCompany, previousValue), (currentID, currentCompany, currentValue)) =>
+            // As we have grouped by company, the previousCompany here should always match currentCompany
+            assert(previousCompany == currentCompany, "Neighbors should have the same company name.")
+
+            if (previousValue > 1000) // "is valid"
+            {
+              (currentID, currentCompany, currentValue, previousID, previousValue) // it's the answer for `current`
+            } else {
+              (currentID, currentCompany, currentValue, 0, 0) // we still do not know the answer for this entry
+            }
+        }
+        (Iterator(firstEntry) ++ secondEntryOnwards).toList
+      }
     })
   }
 
@@ -96,25 +102,29 @@ object Main {
   // By processing the tuples in order, we can propagate the answers throughout the whole RDD.
   private def propagateAnswers(inputRDD: RDD[List[ProcessedDataTuple]]): RDD[List[ProcessedDataTuple]] = {
     inputRDD.map(company => {
-      // As above, the first entry will be skipped and should be restored later.
-      val secondEntryOnwards = company.sliding(2).map {
-        case Seq((previousID, previousCompany, previousValue, previousAnswerID, previousAnswerValue), (currentID, currentCompany, currentValue, currentAnswerID, currentAnswerValue)) =>
-          // As we have grouped by company, the previousCompany here should always match currentCompany
-          assert(previousCompany == currentCompany, "Neighbors should have the same company name.")
+      // In the case there is only one element, the answer is just the first entry.
+      if (company.size == 1) {
+        List(company.head)
+      } else { // As above, the first entry will be skipped and should be restored later.
+        val secondEntryOnwards = company.sliding(2).map {
+          case Seq((previousID, previousCompany, previousValue, previousAnswerID, previousAnswerValue), (currentID, currentCompany, currentValue, currentAnswerID, currentAnswerValue)) =>
+            // As we have grouped by company, the previousCompany here should always match currentCompany
+            assert(previousCompany == currentCompany, "Neighbors should have the same company name.")
 
-          val doNotHaveAnswerForCurrent = currentAnswerID == 0
-          if (doNotHaveAnswerForCurrent) // "is valid"
-          {
-            // It's always OK to populate it with the previous answers.
-            // 1. If previous answer does not exist, it is 0 and we do not change anything.
-            // 2. If previous answer exists, we correctly propagate it to the current entry.
-            (currentID, currentCompany, currentValue, previousAnswerID, previousAnswerValue) // it's the answer for `current`
-          } else {
-            // This answer is already OK. Do not change it.
-            (currentID, currentCompany, currentValue, currentAnswerID, currentAnswerValue)
-          }
+            val doNotHaveAnswerForCurrent = currentAnswerID == 0
+            if (doNotHaveAnswerForCurrent)
+            {
+              // It's always OK to populate it with the previous answers.
+              // 1. If previous answer does not exist, it is 0 and we do not change anything.
+              // 2. If previous answer exists, we correctly propagate it to the current entry.
+              (currentID, currentCompany, currentValue, previousAnswerID, previousAnswerValue) // it's the answer for `current`
+            } else {
+              // This answer is already OK. Do not change it.
+              (currentID, currentCompany, currentValue, currentAnswerID, currentAnswerValue)
+            }
+        }
+        (Iterator(company.head) ++ secondEntryOnwards).toList
       }
-      (Iterator(company.head) ++ secondEntryOnwards).toList
     })
   }
 }
