@@ -4,28 +4,29 @@ import org.apache.spark.sql.SparkSession
 object Main {
   def main(args: Array[String]): Unit = {
     val spark = SparkSession.builder.master("local[*]").appName("Spark-EPIC").getOrCreate()
-    solve(spark, "input", "output_temp")
+    solve(spark, "input", "output")
   }
 
   def solve(sparkSession: SparkSession, inputDirectory: String, outputDirectory: String): Unit = {
     val sc = sparkSession.sparkContext
 
+    // Read is an IO function, let's have it at this layer and keep "solveForRDD" pure.
     val inputRDD = sc.textFile(inputDirectory)
+    // Parsing ended up more convenient to have here too.
     val parsedRDD = parseIntoTuple(inputRDD)
     val outputRDD = solveForRDD(parsedRDD)
 
     // Save to CSV files.
-    // The name here is auto-generated though, and I didn't find any easy way of changing it.
-    // Maybe let's rename it after.
     val asDataFrame = sparkSession.createDataFrame(outputRDD)
     asDataFrame.write.format("csv").save(outputDirectory)
+    // The challenge asked for a particular naming convention for output files:
+    // output-1.csv, output-2.csv, and so on...
+    // but it does not seem straightforward to do that with Spark
     // Possible Solutions:
     // 1. Rename all output files in place.
     //    (But maybe Spark uses the naming conventions for something and we should not change it?)
     // 2. Copy all the output files and rename the copies.
     //    (Bad because we would be using 2x the amount of storage to save the files, which can be unfeasible)
-    // Let's leave it for later.
-
   }
 
   // Pure function, easier to test and reason about.
@@ -84,7 +85,11 @@ object Main {
             // As we have grouped by company, the previousCompany here should always match currentCompany
             assert(previousCompany == currentCompany, "Neighbors should have the same company name.")
 
-            if (previousValue > 1000) // "is valid"
+            // We can easily switch this requirement in the future.
+            // To make it more generic, we could receive a "validatorFunction" by argument and use it
+            // here.
+            val isValid = previousValue > 1000
+            if (isValid)
             {
               (currentID, currentCompany, currentValue, previousID, previousValue) // it's the answer for `current`
             } else {
@@ -112,8 +117,7 @@ object Main {
             assert(previousCompany == currentCompany, "Neighbors should have the same company name.")
 
             val doNotHaveAnswerForCurrent = currentAnswerID == 0
-            if (doNotHaveAnswerForCurrent)
-            {
+            if (doNotHaveAnswerForCurrent) {
               // It's always OK to populate it with the previous answers.
               // 1. If previous answer does not exist, it is 0 and we do not change anything.
               // 2. If previous answer exists, we correctly propagate it to the current entry.
